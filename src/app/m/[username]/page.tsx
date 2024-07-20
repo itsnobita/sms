@@ -90,7 +90,7 @@ export default function SendMessage() {
 
   const fetchAcceptMessages = async () => {
     try {
-      const response = await axios.get<apiResponse>("/api/accept-message");
+      const response = await axios.get<apiResponse>(`/api/accept-message/${_id}`);
       setIsAccepting(response?.data?.is_accepting_message as boolean);
       setUserName(response?.data?.name as string);
     } catch (error) {
