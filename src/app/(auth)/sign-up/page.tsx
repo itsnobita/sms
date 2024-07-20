@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { useDebounceCallback } from "usehooks-ts";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
@@ -23,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-export default function page() {
+export default function SignUp() {
   const [email, setEmail] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
