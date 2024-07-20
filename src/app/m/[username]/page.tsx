@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
-import { useCompletion } from "ai/react";
+// import { useCompletion } from "ai/react";
 import {
   Form,
   FormControl,
@@ -40,15 +40,15 @@ export default function SendMessage() {
   const params = useParams<{ username: string }>();
   const _id = params.username;
 
-  const {
-    complete,
-    completion,
-    isLoading: isSuggestLoading,
-    error,
-  } = useCompletion({
-    api: "/api/suggest-messages",
-    initialCompletion: initialMessageString,
-  });
+//   const {
+//     complete,
+//     completion,
+//     isLoading: isSuggestLoading,
+//     error,
+//   } = useCompletion({
+//     api: "/api/suggest-messages",
+//     initialCompletion: initialMessageString,
+//   });
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -107,7 +107,7 @@ export default function SendMessage() {
 
   const fetchSuggestedMessages = async () => {
     try {
-      complete("");
+    //   complete("");
     } catch (error) {
       console.error("Error fetching messages:", error);
       // Handle error appropriately
@@ -173,7 +173,7 @@ export default function SendMessage() {
           <Button
             onClick={fetchSuggestedMessages}
             className="my-4"
-            disabled={isSuggestLoading}
+            // disabled={isSuggestLoading}
           >
             Suggest Messages
           </Button>
@@ -184,7 +184,7 @@ export default function SendMessage() {
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
-            {error ? (
+            {/* {error ? (
               <p className="text-red-500">{error.message}</p>
             ) : (
               parseStringMessages(completion).map((message, index) => (
@@ -197,7 +197,7 @@ export default function SendMessage() {
                   {message}
                 </Button>
               ))
-            )}
+            )} */}
           </CardContent>
         </Card>
       </div>
