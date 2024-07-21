@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
     let verify_code = Math.floor(100000 + Math.random() * 900000).toString();
     const user = await UserModel.create({
-      email,
+      email:email.toString().toLowerCase(),
       password: hashedPassword,
       username,
       name,
