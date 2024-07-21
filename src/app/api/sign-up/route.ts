@@ -34,6 +34,7 @@ export async function POST(request: Request) {
     try {
       short_url = await getShortURL(user?._id as string, user.name);
     } catch (e) {
+      short_url=`${process.env.BASEURL}/${user._id}`
       console.log("Error getting short url");
     }
     const updatedUser = await UserModel.findOneAndUpdate(

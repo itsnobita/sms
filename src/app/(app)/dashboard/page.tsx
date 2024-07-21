@@ -28,7 +28,6 @@ function UserDashboard() {
   };
 
   const { data: session } = useSession();
-  const [mUrl, setMUrl] = useState(session?.user.short_url);
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -66,8 +65,7 @@ function UserDashboard() {
         }
         const response = await axios.get<apiResponse>("/api/messages");
         setValue("acceptMessages", response.data.is_accepting_message);
-        setMessages(response.data.messages || []);
-        setMUrl(response.data.short_url as string);
+          setMessages(response.data.messages || []);
         if (refresh) {
           toast({
             title: "Refreshed Messages",
@@ -132,13 +130,14 @@ function UserDashboard() {
     return <div></div>;
   }
 
-  const { _id } = session.user as User;
+  const { _id,short_url } = session.user as User;
 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = mUrl ? mUrl : `${baseUrl}/m/${_id}`;
+    const profileUrl = `${short_url}`
+        
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(mUrl);
+    navigator.clipboard.writeText(profileUrl);
     toast({
       title: "URL Copied!",
       description: "Profile URL has been copied to clipboard.",
