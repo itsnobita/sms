@@ -184,6 +184,7 @@ export default function SendMessage() {
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
+            coming soon...
             {/* {error ? (
               <p className="text-red-500">{error.message}</p>
             ) : (
