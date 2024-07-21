@@ -34,26 +34,26 @@ function UserDashboard() {
   });
 
   const { register, watch, setValue } = form;
-  const acceptMessages = watch("acceptMessages");
+  const is_accepting_message = watch("is_accepting_message");
 
-  //   const fetchAcceptMessages = useCallback(async () => {
-  //     setIsSwitchLoading(true);
-  //     try {
-  //       const response = await axios.get<apiResponse>('/api/accept-message');
-  //       setValue('acceptMessages', response.data.is_accepting_message);
-  //     } catch (error) {
-  //       const axiosError = error as AxiosError<apiResponse>;
-  //       toast({
-  //         title: 'Error',
-  //         description:
-  //           axiosError.response?.data.message ??
-  //           'Failed to fetch message settings',
-  //         variant: 'destructive',
-  //       });
-  //     } finally {
-  //       setIsSwitchLoading(false);
-  //     }
-  //   }, [setValue, toast]);
+    const fetchAcceptMessages = useCallback(async () => {
+      setIsSwitchLoading(true);
+      try {
+        const response = await axios.get<apiResponse>('/api/accept-message');
+        setValue('acceptMessages', response.data.is_accepting_message);
+      } catch (error) {
+        const axiosError = error as AxiosError<apiResponse>;
+        toast({
+          title: 'Error',
+          description:
+            axiosError.response?.data.message ??
+            'Failed to fetch message settings',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsSwitchLoading(false);
+      }
+    }, [setValue, toast]);
 
   const fetchMessages = useCallback(
     async (refresh: boolean = false) => {
@@ -64,7 +64,6 @@ function UserDashboard() {
           setIsSwitchLoading(true);
         }
         const response = await axios.get<apiResponse>("/api/messages");
-        setValue("acceptMessages", response.data.is_accepting_message);
           setMessages(response.data.messages || []);
         if (refresh) {
           toast({
@@ -94,12 +93,12 @@ function UserDashboard() {
 
     fetchMessages();
 
-    // fetchAcceptMessages();
+    fetchAcceptMessages();
   }, [
     session,
     setValue,
     toast,
-    //   fetchAcceptMessages,
+      fetchAcceptMessages,
     fetchMessages,
   ]);
 
@@ -107,9 +106,9 @@ function UserDashboard() {
   const handleSwitchChange = async () => {
     try {
       const response = await axios.post<apiResponse>("/api/accept-message", {
-        is_accepting_message: !acceptMessages,
+        is_accepting_message: !is_accepting_message,
       });
-      setValue("acceptMessages", !acceptMessages);
+      setValue("is_accepting_message", !is_accepting_message);
       toast({
         title: response.data.message,
         variant: "default",
@@ -163,13 +162,13 @@ function UserDashboard() {
 
       <div className="mb-4">
         <Switch
-          {...register("acceptMessages")}
-          checked={acceptMessages}
+          {...register("is_accepting_message")}
+          checked={is_accepting_message}
           onCheckedChange={handleSwitchChange}
           disabled={isSwitchLoading}
         />
         <span className="ml-2">
-          Accept Messages: {acceptMessages ? "On" : "Off"}
+          Accept Messages: {is_accepting_message ? "On" : "Off"}
         </span>
       </div>
       <Separator />
