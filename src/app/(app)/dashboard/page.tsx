@@ -40,7 +40,7 @@ function UserDashboard() {
       setIsSwitchLoading(true);
       try {
         const response = await axios.get<apiResponse>('/api/accept-message');
-        setValue('acceptMessages', response.data.is_accepting_message);
+        setValue('is_accepting_message', response.data.is_accepting_message);
       } catch (error) {
         const axiosError = error as AxiosError<apiResponse>;
         toast({
