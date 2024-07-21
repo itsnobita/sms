@@ -16,8 +16,9 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any): Promise<any> {
         await dbConnect();
         try {
+          let email = credentials.email.toString().toLowerCase()
           const user = await UserModel.findOne({
-            email: credentials.email,
+            email: email,
           });
           if (!user) {
             throw new Error("User does not exist.");
