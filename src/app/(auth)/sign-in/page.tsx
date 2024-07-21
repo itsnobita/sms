@@ -6,9 +6,9 @@ import * as z from "zod";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
-import {  useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import  { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { apiResponse } from "@/types/apiResponse";
 import {
   Form,
@@ -35,27 +35,29 @@ export default function SignIn() {
     },
   });
 
-
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true);
-      try {
-        const result= await signIn('credentials',{redirect:false,...data})
-    if (result?.error) {
-        if (result.error === 'CredentialsSignin') {
+    try {
+      const result = await signIn("credentials", { redirect: false, ...data });
+      if (result?.error) {
+        if (result.error === "CredentialsSignin") {
           toast({
-            title: 'Login Failed',
-            description: 'Incorrect username or password',
-            variant: 'destructive',
+            title: "Login Failed",
+            description: "Incorrect username or password",
+            variant: "destructive",
           });
         } else {
           toast({
-            title: 'Error',
+            title: "Error",
             description: result.error,
-            variant: 'destructive',
+            variant: "destructive",
           });
         }
       }
-      router.replace("/dashboard");
+      console.log(result)
+      if (result?.url) {
+        router.replace('/dashboard');
+      }
     } catch (error) {
       const axiosError = error as AxiosError<apiResponse>;
       toast({
@@ -85,10 +87,7 @@ export default function SignIn() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <Input
-                    placeholder="Enter Email address"
-                    {...field}
-                  />
+                  <Input placeholder="Enter Email address" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
