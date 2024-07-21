@@ -7,4 +7,7 @@ export interface apiResponse{
     name?: string;
     short_url?: string;
     messages?: Array<Message>;
+    suggestionId?: number;
+    suggestions?:  Array<string>;
+
 }

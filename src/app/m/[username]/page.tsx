@@ -24,31 +24,37 @@ import { apiResponse } from "@/types/apiResponse";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { messageSchema } from "@/schemas/messageSchema";
-
-const specialChar = "||";
-
-const parseStringMessages = (messageString: string): string[] => {
-  return messageString.split(specialChar);
-};
-
-const initialMessageString =
-  "What's your favorite movie?||Do you have any pets?||What's your dream job?";
+import { Message } from "@/models/User";
 
 export default function SendMessage() {
   const [username, setUserName] = useState("");
   const [isAccepting, setIsAccepting] = useState(true);
+  const [suggestId, setSuggestId] = useState(Math.floor(Math.random() * 452));
+  const [isSuggestLoading, setIsSuggestLoading] = useState(false);
+  const [messages, setMessages] = useState<Array<string>>([]);
   const params = useParams<{ username: string }>();
   const _id = params.username;
 
-//   const {
-//     complete,
-//     completion,
-//     isLoading: isSuggestLoading,
-//     error,
-//   } = useCompletion({
-//     api: "/api/suggest-messages",
-//     initialCompletion: initialMessageString,
-//   });
+  const getSuggestions = async (id: number) => {
+    setIsSuggestLoading(true);
+    try {
+      const response = await axios.post<apiResponse>("/api/suggest-message", {
+        id,
+      });
+      setSuggestId(response?.data?.suggestionId || Math.floor(Math.random() * 452))
+      setMessages(response?.data?.suggestions || []);
+    } catch (error) {
+      const axiosError = error as AxiosError<apiResponse>;
+      toast({
+        title: "Error",
+        description:
+          axiosError.response?.data.message ?? "Failed to suggest message",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSuggestLoading(false);
+    }
+  };
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -90,7 +96,9 @@ export default function SendMessage() {
 
   const fetchAcceptMessages = async () => {
     try {
-      const response = await axios.get<apiResponse>(`/api/accept-message/${_id}`);
+      const response = await axios.get<apiResponse>(
+        `/api/accept-message/${_id}`
+      );
       setIsAccepting(response?.data?.is_accepting_message as boolean);
       setUserName(response?.data?.name as string);
     } catch (error) {
@@ -107,7 +115,7 @@ export default function SendMessage() {
 
   const fetchSuggestedMessages = async () => {
     try {
-    //   complete("");
+      await getSuggestions(suggestId)
     } catch (error) {
       console.error("Error fetching messages:", error);
       // Handle error appropriately
@@ -115,6 +123,7 @@ export default function SendMessage() {
   };
 
   useEffect(() => {
+    getSuggestions(suggestId)
     fetchAcceptMessages();
   }, []);
 
@@ -130,14 +139,16 @@ export default function SendMessage() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Send Anonymous Message to @ <strong>{username}</strong></FormLabel>
+                <FormLabel>
+                  Send Anonymous Message to @ <strong>{username}</strong>
+                </FormLabel>
                 <FormControl>
                   {!isAccepting ? (
                     <Textarea
                       placeholder="user is not accepting messages at this time"
                       className="resize-none"
-                                {...field}
-                                readOnly
+                      {...field}
+                      readOnly
                     />
                   ) : (
                     <Textarea
@@ -173,7 +184,7 @@ export default function SendMessage() {
           <Button
             onClick={fetchSuggestedMessages}
             className="my-4"
-            // disabled={isSuggestLoading}
+            disabled={isSuggestLoading}
           >
             Suggest Messages
           </Button>
@@ -184,11 +195,8 @@ export default function SendMessage() {
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
-            coming soon...
-            {/* {error ? (
-              <p className="text-red-500">{error.message}</p>
-            ) : (
-              parseStringMessages(completion).map((message, index) => (
+            {
+              messages && messages.map((message, index) => (
                 <Button
                   key={index}
                   variant="outline"
@@ -198,7 +206,7 @@ export default function SendMessage() {
                   {message}
                 </Button>
               ))
-            )} */}
+            }
           </CardContent>
         </Card>
       </div>
