@@ -35,10 +35,10 @@ export async function GET(request: Request) {
       return Response.json(
         {
           success: false,
-          message: "No message Found",
+          message: "You have no messages so far",
         },
         {
-          status: 404,
+          status: 200,
         }
       );
     }
