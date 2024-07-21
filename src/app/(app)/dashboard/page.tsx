@@ -134,7 +134,7 @@ function UserDashboard() {
   const profileUrl = mUrl || `${baseUrl}/m/${_id}`;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(profileUrl);
+    navigator.clipboard.writeText(mUrl);
     toast({
       title: 'URL Copied!',
       description: 'Profile URL has been copied to clipboard.',
@@ -150,7 +150,7 @@ function UserDashboard() {
         <div className="flex items-center">
           <input
             type="text"
-            value={profileUrl}
+            value={mUrl}
             disabled
             className="input input-bordered w-full p-2 mr-2"
           />
