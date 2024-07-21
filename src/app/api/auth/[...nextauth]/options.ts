@@ -43,6 +43,7 @@ export const authOptions: NextAuthOptions = {
         token.is_accepting_message = user.is_accepting_message;
         token.email = user.email;
         token.name = user.name;
+        token.short_url = user.short_url;
       }
       return token;
     },
@@ -52,6 +53,7 @@ export const authOptions: NextAuthOptions = {
         session.user.is_accepting_message = token.is_accepting_message;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.short_url = token.short_url;
       }
       return session;
     },

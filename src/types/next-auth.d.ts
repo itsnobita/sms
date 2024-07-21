@@ -6,6 +6,7 @@ declare module 'next-auth' {
       _id?: string;
       is_accepting_message?: boolean;
       name?: string;
+      short_url?: string;
     } & DefaultSession['user'];
   }
 
@@ -13,6 +14,7 @@ declare module 'next-auth' {
     _id?: string;
     is_accepting_message?: boolean;
     name?: string;
+    short_url?: string;
   }
 }
 
@@ -21,5 +23,6 @@ declare module 'next-auth/jwt' {
     _id?: string;
     is_accepting_message?: boolean;
     name?: string;
+    short_url ?: string;
   }
 }
