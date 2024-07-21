@@ -130,7 +130,7 @@ export default function SendMessage() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Send Anonymous Message to @{username}</FormLabel>
+                <FormLabel>Send Anonymous Message to @ <strong>{username}</strong></FormLabel>
                 <FormControl>
                   {!isAccepting ? (
                     <Textarea
