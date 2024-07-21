@@ -24,10 +24,14 @@ export default function Navbar() {
             Logout
           </Button>
         </>
-      ) : (
+        ) : (<>
+          <Link href="/sign-up">
+          <Button className="w-full md:w-auto bg-slate-100 text-black" variant={'outline'}>Sign Up</Button>
+        </Link>
         <Link href="/sign-in">
           <Button className="w-full md:w-auto bg-slate-100 text-black" variant={'outline'}>Login</Button>
-        </Link>
+            </Link>
+            </>
       )}
     </div>
   </nav>
