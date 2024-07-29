@@ -132,7 +132,7 @@ function UserDashboard() {
   const { _id,short_url } = session.user as User;
 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    const profileUrl = `${short_url}`
+    const profileUrl = short_url?`${short_url}`:`${baseUrl}/m/${_id}}`
         
 
   const copyToClipboard = () => {
